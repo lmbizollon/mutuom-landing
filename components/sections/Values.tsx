@@ -1,11 +1,11 @@
-import { Clock, DollarSign, Users, Unlock, Leaf } from 'lucide-react'
+import { CheckCircle, DollarSign, FileText, Users, Unlock, Leaf } from 'lucide-react'
 
 export function Values() {
   const values = [
     {
-      icon: Clock,
-      title: 'Gagnez du temps',
-      description: 'Le pilotage fournisseurs, c\'est nous',
+      icon: CheckCircle,
+      title: 'Temps récupéré',
+      description: 'On négocie avec vos fournisseurs. Vous vous concentrez sur vos chantiers.',
     },
     {
       icon: DollarSign,
@@ -13,9 +13,9 @@ export function Values() {
       description: '20% d\'économies en moyenne sur vos achats',
     },
     {
-      icon: Users,
-      title: 'Appuyez-vous sur des experts',
-      description: 'Un accompagnement sur-mesure pour vos projets',
+      icon: FileText,
+      title: 'Expertise achat',
+      description: '6 ans en distribution BtoB. On connaît les grilles tarifaires, les marges, les leviers.',
     },
     {
       icon: Unlock,

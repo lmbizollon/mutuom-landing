@@ -29,10 +29,13 @@ export function Solution() {
             <h3 className="mb-3 font-sora text-xl font-semibold text-navy lg:text-2xl">
               On négocie pour tous
             </h3>
-            <p className="text-gray-700 leading-relaxed">
-              Votre volume + les 49 autres = pouvoir d'achat d'un groupe national.
+            <p className="mb-4 text-gray-700 leading-relaxed">
+              Volume cumulé du groupement = pouvoir d'achat d'un grand compte.
               On obtient leurs conditions.
             </p>
+            <div className="rounded-md bg-forest/10 px-3 py-2 text-sm font-medium text-forest">
+              → Plus on est nombreux, meilleures sont les conditions
+            </div>
           </div>
 
           <div className="rounded-lg bg-white p-6 shadow-lg lg:p-8">

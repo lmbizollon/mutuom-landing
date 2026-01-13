@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/Button'
 import { AmbassadeurBadge } from '@/components/AmbassadeurBadge'
+import { useAmbassadeurCount, getPricingTier } from '@/hooks/useAmbassadeurCount'
 import Image from 'next/image'
 
 interface HeroProps {
@@ -9,6 +10,8 @@ interface HeroProps {
 }
 
 export function Hero({ onCTAClick }: HeroProps) {
+  const { count } = useAmbassadeurCount()
+  const pricing = getPricingTier(count)
 
   return (
     <section className="relative bg-white border-b border-gray-100">
@@ -51,8 +54,15 @@ export function Hero({ onCTAClick }: HeroProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={onCTAClick} className="text-base lg:text-lg px-10 lg:px-12 py-4 lg:py-5">
-              Réserver ma place
+            <Button
+              onClick={onCTAClick}
+              className={`text-base lg:text-lg px-10 lg:px-12 py-4 lg:py-5 ${
+                pricing.isPrimary
+                  ? 'bg-navy hover:bg-forest'
+                  : 'bg-gray-700 hover:bg-gray-600'
+              }`}
+            >
+              {pricing.ctaText}
             </Button>
           </div>
         </div>

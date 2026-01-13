@@ -3,10 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 
 export const dynamic = 'force-dynamic'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-)
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Supabase admin configuration is missing')
+  }
+
+  return createClient(supabaseUrl, supabaseKey)
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,6 +22,7 @@ export async function POST(request: NextRequest) {
     const { rgpd, ...dataToInsert } = data
 
     // Insert dans Supabase
+    const supabase = getSupabaseAdmin()
     const { error: supabaseError } = await supabase
       .from('fournisseurs')
       .insert([

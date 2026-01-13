@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 import { ambassadorSchema } from '@/lib/validations'
 
 export const dynamic = 'force-dynamic'
@@ -12,6 +12,7 @@ export async function POST(request: Request) {
     const validatedData = ambassadorSchema.parse(body)
 
     // Insertion dans Supabase
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase
       .from('ambassadeurs')
       .insert([
@@ -53,6 +54,7 @@ export async function POST(request: Request) {
 // GET pour récupérer le nombre de places restantes
 export async function GET() {
   try {
+    const supabase = getSupabaseClient()
     const { count, error } = await supabase
       .from('ambassadeurs')
       .select('*', { count: 'exact', head: true })

@@ -14,8 +14,8 @@ export function Values() {
     },
     {
       icon: FileText,
-      title: 'Expertise achat',
-      description: '6 ans en distribution BtoB. On connaît les grilles tarifaires, les marges, les leviers.',
+      title: 'Expertise négociation',
+      description: 'Grilles tarifaires, marges fournisseurs, leviers de remise. On connaît les mécaniques de la distribution BtoB.',
     },
     {
       icon: Unlock,

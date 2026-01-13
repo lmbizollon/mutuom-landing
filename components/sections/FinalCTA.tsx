@@ -6,11 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ambassadorSchema, type AmbassadorFormData } from '@/lib/validations'
 import { useState } from 'react'
 import { Zap, CheckCircle } from 'lucide-react'
+import { useAmbassadeurCount, getPricingTier } from '@/hooks/useAmbassadeurCount'
 
 export function FinalCTA() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const [remainingSpots, setRemainingSpots] = useState(37)
+  const { count, loading } = useAmbassadeurCount()
+  const pricing = getPricingTier(count)
 
   const {
     register,
@@ -49,14 +51,22 @@ export function FinalCTA() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10 sm:mb-12 lg:mb-16">
-            <div className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta px-4 lg:px-6 py-2 lg:py-3 rounded-full border border-terracotta/20 mb-6 lg:mb-8">
-              <Zap className="w-4 h-4 lg:w-5 lg:h-5" />
-              <span className="font-semibold text-sm lg:text-base">{remainingSpots}/50 places restantes</span>
-            </div>
+            {!loading && (
+              <div className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta px-4 lg:px-6 py-2 lg:py-3 rounded-full border border-terracotta/20 mb-6 lg:mb-8">
+                <Zap className="w-4 h-4 lg:w-5 lg:h-5" />
+                <span className="font-semibold text-sm lg:text-base">{pricing.badge}</span>
+              </div>
+            )}
 
-            <h2 className="mb-4 lg:mb-6 text-3xl sm:text-4xl lg:text-5xl">Devenez ambassadeur MUTUOM</h2>
+            <h2 className="mb-4 lg:mb-6 text-3xl sm:text-4xl lg:text-5xl">
+              {count < 15
+                ? 'Devenez ambassadeur MUTUOM'
+                : count < 50
+                  ? 'Rejoignez le groupement MUTUOM'
+                  : 'Adhérez au groupement MUTUOM'}
+            </h2>
             <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 leading-relaxed">
-              Rejoignez les 50 premiers adhérents et bénéficiez de l'adhésion gratuite à vie
+              {pricing.subtitle}
             </p>
           </div>
 
@@ -224,7 +234,7 @@ export function FinalCTA() {
 
             <div className="mt-6 sm:mt-8 lg:mt-10 text-center">
               <Button type="submit" disabled={isSubmitting} className="px-10 sm:px-12 lg:px-16 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl w-full sm:w-auto">
-                {isSubmitting ? 'Envoi en cours...' : 'Réserver ma place'}
+                {isSubmitting ? 'Envoi en cours...' : pricing.ctaText}
               </Button>
             </div>
           </form>

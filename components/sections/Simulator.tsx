@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/Button'
 import { useState } from 'react'
+import { useAmbassadeurCount, getPricingTier } from '@/hooks/useAmbassadeurCount'
 
 interface SimulatorProps {
   onCTAClick: () => void
@@ -9,6 +10,8 @@ interface SimulatorProps {
 
 export function Simulator({ onCTAClick }: SimulatorProps) {
   const [ca, setCA] = useState<number>(50000)
+  const { count } = useAmbassadeurCount()
+  const pricing = getPricingTier(count)
 
   const economies = Math.round(ca * 0.15)
   const economiesMonthly = Math.round(economies / 12)
@@ -72,7 +75,7 @@ export function Simulator({ onCTAClick }: SimulatorProps) {
 
             <div className="text-center mt-6 sm:mt-8 lg:mt-10">
               <Button onClick={onCTAClick} className="px-8 sm:px-10 lg:px-12 py-3 sm:py-4 lg:py-5 text-base sm:text-lg lg:text-xl w-full sm:w-auto">
-                Réserver ma place ambassadeur
+                {pricing.ctaText}
               </Button>
             </div>
           </div>

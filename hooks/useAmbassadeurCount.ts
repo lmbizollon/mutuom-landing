@@ -80,7 +80,7 @@ export function getPricingTier(count: number): PricingTier {
       badge: "⭐ GRATUIT À VIE",
       title: `${remaining} ${remaining > 1 ? 'places restantes' : 'place restante'}`,
       subtitle: "Adhésion gratuite à vie pour les 15 premiers",
-      ctaText: "Réserver ma place",
+      ctaText: "Réserver ma place gratuite",
       isPrimary: true
     }
   } else if (count < 50) {
@@ -94,8 +94,8 @@ export function getPricingTier(count: number): PricingTier {
     }
   } else {
     return {
-      badge: "📋 PROGRAMME COMPLET",
-      title: "Adhésion 399€/an",
+      badge: "📋 ADHÉSION STANDARD",
+      title: "399€/an",
       subtitle: "Rejoignez le groupement d'achat",
       ctaText: "Demander mon adhésion",
       isPrimary: false

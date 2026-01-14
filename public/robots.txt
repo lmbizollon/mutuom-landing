@@ -1,0 +1,14 @@
+# robots.txt pour MUTUOM
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://mutuom.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 0
+
+# Interdictions spécifiques
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/

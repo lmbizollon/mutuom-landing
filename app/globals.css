@@ -22,4 +22,25 @@
   h3 {
     @apply text-3xl font-semibold leading-snug text-gray-900;
   }
+
+  /* Focus visible pour navigation clavier */
+  *:focus-visible {
+    outline: 2px solid #1E8A6F;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Classe sr-only pour lecteurs d'écran */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 }

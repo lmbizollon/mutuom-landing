@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getSupabaseClient } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 import { ambassadorSchema } from '@/lib/validations'
 
 export const dynamic = 'force-dynamic'
@@ -11,8 +11,11 @@ export async function POST(request: Request) {
     // Validation avec Zod
     const validatedData = ambassadorSchema.parse(body)
 
-    // Insertion dans Supabase
-    const supabase = getSupabaseClient()
+    // Insertion dans Supabase avec service_role key (sécurisé côté serveur)
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
     const { data, error } = await supabase
       .from('ambassadeurs')
       .insert([
@@ -54,7 +57,10 @@ export async function POST(request: Request) {
 // GET pour récupérer le nombre de places restantes
 export async function GET() {
   try {
-    const supabase = getSupabaseClient()
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
     const { count, error } = await supabase
       .from('ambassadeurs')
       .select('*', { count: 'exact', head: true })

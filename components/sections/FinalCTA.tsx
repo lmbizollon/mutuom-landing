@@ -11,6 +11,7 @@ import { useAmbassadeurCount, getPricingTier } from '@/hooks/useAmbassadeurCount
 export function FinalCTA() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const { count, loading } = useAmbassadeurCount()
   const pricing = getPricingTier(count)
 
@@ -25,6 +26,7 @@ export function FinalCTA() {
 
   const onSubmit = async (data: AmbassadorFormData) => {
     setIsSubmitting(true)
+    setErrorMessage('')
 
     try {
       // Envoi vers API Route Next.js qui appellera Supabase + Make.com
@@ -38,9 +40,19 @@ export function FinalCTA() {
         setIsSuccess(true)
         reset()
         setTimeout(() => setIsSuccess(false), 5000)
+      } else {
+        // Récupérer le message d'erreur de l'API
+        const errorData = await response.json().catch(() => ({}))
+        setErrorMessage(
+          errorData.error ||
+          'Une erreur est survenue lors de l\'inscription. Veuillez réessayer ou nous contacter directement à contact@mutuom.com'
+        )
       }
     } catch (error) {
       console.error('Erreur lors de l\'envoi:', error)
+      setErrorMessage(
+        'Impossible de contacter le serveur. Vérifiez votre connexion internet ou contactez-nous à contact@mutuom.com'
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -75,6 +87,17 @@ export function FinalCTA() {
               <CheckCircle className="w-6 h-6 lg:w-8 lg:h-8 text-forest flex-shrink-0" />
               <p className="text-forest font-semibold text-base lg:text-lg">
                 Merci ! Votre candidature a été envoyée. Nous vous recontactons sous 48h.
+              </p>
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="bg-red-50 border border-red-300 rounded-lg p-6 lg:p-8 mb-8 lg:mb-10">
+              <p className="text-red-800 font-semibold text-base lg:text-lg mb-2">
+                ❌ Erreur lors de l'inscription
+              </p>
+              <p className="text-red-700 text-sm lg:text-base">
+                {errorMessage}
               </p>
             </div>
           )}

@@ -7,14 +7,28 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
+    console.log('Request body received:', body)
+
+    // Vérifier les variables d'environnement
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('Missing env vars:', {
+        hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+      })
+      return NextResponse.json(
+        { error: 'Configuration serveur incorrecte' },
+        { status: 500 }
+      )
+    }
 
     // Validation avec Zod
     const validatedData = ambassadorSchema.parse(body)
+    console.log('Validation successful')
 
     // Insertion dans Supabase avec service_role key (sécurisé côté serveur)
     const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     )
     const { data, error } = await supabase
       .from('ambassadeurs')
@@ -49,7 +63,20 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data }, { status: 201 })
   } catch (error) {
-    console.error('Erreur API:', error)
+    console.error('Erreur API complète:', error)
+
+    // Si c'est une erreur Zod, donner plus de détails
+    if (error && typeof error === 'object' && 'issues' in error) {
+      console.error('Erreur de validation Zod:', JSON.stringify(error))
+      return NextResponse.json(
+        {
+          error: 'Données invalides',
+          details: process.env.NODE_ENV === 'development' ? error : undefined
+        },
+        { status: 400 }
+      )
+    }
+
     return NextResponse.json({ error: 'Données invalides' }, { status: 400 })
   }
 }
